@@ -1,20 +1,68 @@
 import React from 'react';
-import { Switch,Route } from 'react-router-dom';
+import { Switch,Route, Redirect } from 'react-router-dom';
+import {auth,createUserProfileDocument} from './firebase/firebase.utils';
 
 import './App.css';
+
+import Auth from './pages/auth/auth.component';
 
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      auth:null,
-
+      currentUser:null
     }
   }
 
+  componentDidMount() {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSapshot(snapshot => {
+          this.setState({
+            ...this.state,
+            currentUser: {
+              id:snapshot.id,
+            ...snapshot.data()
+            }
+          })
+        });
+      } else {
+        this.setState({
+          ...this.state,
+          currentUser:userAuth
+        });
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+
   render() {
-    return <h1>HELLOOOOOO</h1>
+    let content;
+
+    if (this.state.currentUser !== null) {
+      content = (
+        <h1>authenticated!</h1>
+      )
+    } else {
+      content = (
+        <Switch>
+          <Route path="/auth" exact component={Auth}/>
+          <Redirect to="/auth"/>
+        </Switch>
+      )
+    }
+
+    return (
+    <div className="App">
+      {content}
+    </div>
+    )
   }
 }
 
