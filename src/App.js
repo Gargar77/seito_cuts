@@ -6,12 +6,13 @@ import './App.css';
 
 import Auth from './pages/auth/auth.component';
 
-
+// NOTE: REMOVE bypassAuth property in production mode!!
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      currentUser:null
+      currentUser:null,
+      bypassAuth:true
     }
   }
 
@@ -45,7 +46,7 @@ class App extends React.Component {
   render() {
     let content;
 
-    if (this.state.currentUser !== null) {
+    if (this.state.currentUser !== null || this.state.bypassAuth) {
       content = (
         <h1>authenticated!</h1>
       )
