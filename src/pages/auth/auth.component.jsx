@@ -39,11 +39,20 @@ class Auth extends React.Component {
         )
 
         const {isSignIn,isLanding} = this.state;
-
         if (isSignIn && !isLanding) {
-            auth = <SignIn/>
+            auth = (
+                <div>
+                    <button onClick={this.returnHomeHandler}>back</button>
+                    <SignIn/>
+                </div>
+            )
         } else if (!isLanding) {
-            auth = <SignUp/>
+            auth = (
+                <div>
+                    <button onClick={this.returnHomeHandler}>back</button>
+                    <SignUp/>
+                </div>
+            )
         }
 
         return (
