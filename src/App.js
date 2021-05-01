@@ -5,6 +5,7 @@ import {auth,createUserProfileDocument} from './firebase/firebase.utils';
 import './App.css';
 
 import Auth from './pages/auth/auth.component';
+import Homepage from './pages/auth/homepage/homepage.component';
 
 // NOTE: REMOVE bypassAuth property in production mode!!
 class App extends React.Component {
@@ -48,7 +49,7 @@ class App extends React.Component {
 
     if (this.state.currentUser !== null || this.state.bypassAuth) {
       content = (
-        <h1>authenticated!</h1>
+        <Homepage/>
       )
     } else {
       content = (
