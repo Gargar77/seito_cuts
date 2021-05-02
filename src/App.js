@@ -49,7 +49,11 @@ class App extends React.Component {
 
     if (this.state.currentUser !== null || this.state.bypassAuth) {
       content = (
-        <Homepage/>
+        <Switch>
+            <Route path="/home" exact component={Homepage}/>
+           <Redirect to="/home"/>
+        </Switch>
+      
       )
     } else {
       content = (
