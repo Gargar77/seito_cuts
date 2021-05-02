@@ -22,15 +22,24 @@ const SAMPLE_CUTS = [
 
 class Homepage extends React.Component {
     state = {
-        currentCuts: SAMPLE_CUTS
+        currentCuts: []
     }
 
     fetchCurrentCuts() {
         // async request to firebase
+        return SAMPLE_CUTS;
     }
 
     componentDidMount() {
-        this.fetchCurrentCuts();
+        this.setState({
+            ...this.state,
+            currentCuts:this.fetchCurrentCuts()
+        });
+    }
+
+    addCut() {
+        // async add new cut for the day using user information
+            // returns status 200 id done, or an error if unable to add new cut
     }
 
     render() {
@@ -43,6 +52,7 @@ class Homepage extends React.Component {
                         return <li key={idx}>{`${cutInfo.first} ${cutInfo.last.slice(0,1)}`}</li> 
                     })}
                 </ol>
+                <button disabled={currentCuts.length === 3 ? true : false} onClick={this.addCut}>add cut</button>
             </div>
         )
     }
