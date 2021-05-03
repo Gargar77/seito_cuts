@@ -3,7 +3,7 @@ import React from 'react';
 import './sign-up.styles.css';
 
 import FormInput from '../form-input/form-input.component';
-import { auth,createUserProfileDocument } from '../../firebase/firebase.utils';
+import { auth,createUserProfileDocument, signInWithGoogle } from '../../firebase/firebase.utils';
 
 
 class SignUp extends React.Component {
@@ -19,30 +19,31 @@ class SignUp extends React.Component {
             errors:[]
         }
     }
-    handleSubmit = async (e) => {
-        e.preventDefault();
+
+    signUp = async (provider) => {
         const {first,last,email,password} = this.state;
 
         this.validate();
-        
+
         try {
-            const { user } = await auth.createUserWithEmailAndPassword(email,password);
-
+           if (provider === 'google') {
+            const {user} = await signInWithGoogle();
+            let [first,middle,last=''] = user.displayName.split(' ');
+            if (last === '') last = middle;
             await createUserProfileDocument(user,{first,last});
-            this.setState({
-                first:'',
-                last:'',
-                email:'',
-                password:'',
-                confirmPassword:'',
-                errors:[]
-            })
-
+           } else {
+            const {user} = await auth.createUserWithEmailAndPassword(email,password);
+            await createUserProfileDocument(user,{first,last});
+           }
         } catch (error) {
             this.addError("an unexpected error occured, please try again");
             console.log(error);
         }
-
+    }
+    
+    handleSubmit =  (e) => {
+        e.preventDefault();
+        this.signUp('email');
     }
 
     validate() {
@@ -94,7 +95,6 @@ class SignUp extends React.Component {
     }
 
     render() {
-        console.log('painting sign-up Component')
         console.log(this.state)
         const {first,last,email,password,confirmPassword} = this.state;
         return(
@@ -142,6 +142,8 @@ class SignUp extends React.Component {
                     required
                     />
                     <button type="submit">SIGN UP</button>
+                    <span>Or</span>
+                    <button onClick={()=>this.signUp('google')} >Sign up with Google</button>
                 </form>
             </div>
         )
