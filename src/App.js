@@ -13,7 +13,7 @@ class App extends React.Component {
     super();
     this.state = {
       currentUser:null,
-      bypassAuth:true
+      bypassAuth:false
     }
   }
 
@@ -22,7 +22,7 @@ class App extends React.Component {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
-        userRef.onSapshot(snapshot => {
+        userRef.onSnapshot(snapshot => {
           this.setState({
             ...this.state,
             currentUser: {
@@ -45,6 +45,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.state)
     let content;
 
     if (this.state.currentUser !== null || this.state.bypassAuth) {

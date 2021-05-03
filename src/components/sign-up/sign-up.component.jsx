@@ -3,6 +3,8 @@ import React from 'react';
 import './sign-up.styles.css';
 
 import FormInput from '../form-input/form-input.component';
+import { auth,createUserProfileDocument } from '../../firebase/firebase.utils';
+
 
 class SignUp extends React.Component {
     constructor() {
@@ -13,13 +15,76 @@ class SignUp extends React.Component {
             last:'',
             email:'',
             password:'',
-            confirmPassword: ''
+            confirmPassword: '',
+            errors:[]
         }
     }
     handleSubmit = async (e) => {
         e.preventDefault();
+        const {first,last,email,password} = this.state;
 
-        console.log('signed up!')
+        this.validate();
+        
+        try {
+            const { user } = await auth.createUserWithEmailAndPassword(email,password);
+
+            await createUserProfileDocument(user,{first,last});
+            this.setState({
+                first:'',
+                last:'',
+                email:'',
+                password:'',
+                confirmPassword:'',
+                errors:[]
+            })
+
+        } catch (error) {
+            this.addError("an unexpected error occured, please try again");
+            console.log(error);
+        }
+
+    }
+
+    validate() {
+        const {password,confirmPassword} = this.state;
+        // if passwords match
+        this.confirmPasswords(password,confirmPassword);
+        setTimeout(() => {
+            this.clearErrors();
+        }, 5000);
+    }
+
+    confirmPasswords(password,confirmPassword) {
+        if (password !== confirmPassword) {
+            this.clearPasswords();
+            this.addError('Passwords do not match!');
+        }
+    }
+
+    clearPasswords() {
+        this.setState((prevState)=> ({
+            ...prevState,
+            password:'',
+            confirmPassword:''
+        }))
+    }
+
+    addError(errorMessage) {
+        this.setState( (prevState) => {
+            const newErrors = [...prevState.errors];
+            newErrors.push(errorMessage);
+            return {
+                ...prevState,
+                errors:newErrors
+            }
+        })
+    }
+
+    clearErrors() {
+        this.setState({
+            ...this.state,
+            errors:[]
+        })
     }
 
     handleChange = event => {
@@ -29,6 +94,8 @@ class SignUp extends React.Component {
     }
 
     render() {
+        console.log('painting sign-up Component')
+        console.log(this.state)
         const {first,last,email,password,confirmPassword} = this.state;
         return(
             <div className="sign-up">
