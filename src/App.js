@@ -20,17 +20,21 @@ class App extends React.Component {
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
       if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-
-        userRef.onSnapshot(snapshot => {
-          this.setState({
-            ...this.state,
-            currentUser: {
-              id:snapshot.id,
-            ...snapshot.data()
-            }
-          })
-        });
+        try {
+          const userRef = await createUserProfileDocument(userAuth);
+       
+          userRef.onSnapshot(snapshot => {
+            this.setState({
+              ...this.state,
+              currentUser: {
+                id:snapshot.id,
+              ...snapshot.data()
+              }
+            })
+          });
+        } catch(error) {
+          console.log('Auth error encountered!',error)
+        }
       } else {
         this.setState({
           ...this.state,
