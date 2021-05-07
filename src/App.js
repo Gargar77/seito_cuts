@@ -5,7 +5,7 @@ import {auth,createUserProfileDocument} from './firebase/firebase.utils';
 import './App.css';
 
 import Auth from './pages/auth/auth.component';
-import Homepage from './pages/auth/homepage/homepage.component';
+import Homepage from './pages/homepage/homepage.component';
 
 // NOTE: REMOVE bypassAuth property in production mode!!
 class App extends React.Component {
