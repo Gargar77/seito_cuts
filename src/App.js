@@ -6,6 +6,7 @@ import './App.css';
 
 import Auth from './pages/auth/auth.component';
 import Homepage from './pages/homepage/homepage.component';
+import Header from './components/header/header.component';
 
 // NOTE: REMOVE bypassAuth property in production mode!!
 class App extends React.Component {
@@ -54,10 +55,14 @@ class App extends React.Component {
 
     if (this.state.currentUser !== null || this.state.bypassAuth) {
       content = (
-        <Switch>
-            <Route path="/home" exact component={Homepage}/>
-           <Redirect to="/home"/>
-        </Switch>
+        <div>
+           <Header/>
+           <Switch>
+              <Route path="/home" exact component={Homepage}/>
+             <Redirect to="/home"/>
+           </Switch>
+        </div>
+       
       
       )
     } else {
