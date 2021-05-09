@@ -57,6 +57,10 @@ class Homepage extends React.Component {
 
     async updateCuts(allowedDates) {
         const cuts = {};
+        this.setState({
+            ...this.state,
+            fetchingCuts:true
+        })
 
         for(let i = 0; i < allowedDates.length; i++) {
             let fetchedData = await this.fetchCurrentCuts(allowedDates[i]);
@@ -73,11 +77,6 @@ class Homepage extends React.Component {
 
     componentDidMount() {
         const allowedDates = this.getAllowedDays(MAX_ALLOWED_DAYS);
-        this.setState({
-            ...this.state,
-            fetchingCuts:true
-        });
-
         this.updateCuts(allowedDates);
     }
 

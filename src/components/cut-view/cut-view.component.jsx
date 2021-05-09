@@ -3,8 +3,8 @@ import React from 'react';
 import './cut-view.styles.css';
 
 
-const ADD_CUT_URL = "http://localhost:5001/seito-cuts/us-central1/addCut";
-const REMOVE_CUT_URL = "http://localhost:5001/seito-cuts/us-central1/removeCut";
+const ADD_CUT_URL = "https://us-central1-seito-cuts.cloudfunctions.net/addCut";
+const REMOVE_CUT_URL = "https://us-central1-seito-cuts.cloudfunctions.net/removeCut";
 
 
 class CutView extends React.Component {
@@ -12,13 +12,18 @@ class CutView extends React.Component {
     constructor() {
         super();
         this.state = {
-            
+            editingCut:false
         }
     }
 
     async addCut() {
         // async add new cut for the day using user information
         // const token = await this.props.currentUser.getIdToken();
+        this.setState({
+            ...this.state,
+            editingCut:true
+        })
+
         const date = this.props.date;
         const { id,first,last } = this.props.auth;
         const cutData = {
@@ -38,10 +43,20 @@ class CutView extends React.Component {
             this.props.updateCuts();
         } catch (error) {
             console.log(error);
+        } finally {
+            this.setState({
+                ...this.state,
+                editingCut:false
+            })
         }
     }
 
     async removeCut() {
+        this.setState({
+            ...this.state,
+            editingCut:true
+        })
+
         const {id} = this.props.auth;
         console.log(`removing cut with ID: ${id}`)
         const date = this.props.date;
@@ -61,10 +76,14 @@ class CutView extends React.Component {
             this.props.updateCuts();
         } catch (error) {
             console.log(error);
+        } finally {
+            this.setState({
+                ...this.state,
+                editingCut:false
+            })
         }
 
     }
-
     renderCutOptions() {
         const {currentCuts} = this.props;
         const {id} = this.props.auth;
@@ -72,13 +91,13 @@ class CutView extends React.Component {
             const cut = currentCuts[i];
             if (cut.id === id) {
                 return (
-                    <button onClick={this.removeCut.bind(this)}>remove cut</button>
+                    <button disabled={this.state.editingCut} onClick={this.removeCut.bind(this)}>remove cut</button>
                 )
             }
         }
 
         return(
-            <button disabled={currentCuts.length === 3 ? true : false} onClick={this.addCut.bind(this)}>add cut</button>
+            <button disabled={currentCuts.length === 3 || this.state.editingCut} onClick={this.addCut.bind(this)}>add cut</button>
         )
          
     }
