@@ -1,102 +1,128 @@
 import React from 'react';
 
 import './homepage.styles.css';
-
+import CutView from '../../components/cut-view/cut-view.component';
 import {auth,firestore} from '../../firebase/firebase.utils';
 
-const ADD_CUT_URL = "http://localhost:5001/seito-cuts/us-central1/addCut";
+const MAX_ALLOWED_DAYS = 3;
 
 class Homepage extends React.Component {
     state = {
-        currentCuts: [],
-        fetchingCuts:false
+        fetchingCuts:true,
+        cuts:{},
+        allowedDates:[],
+        currentDay:0
     }
 
-    getTodaysDate() {
+    getAllowedDays(max) {
         const today = new Date();
-        let stringDate =  '' + today.getDate() + (today.getMonth() + 1) + today.getFullYear();
+        let dayOfMonth = today.getDate();
+        const dates = [];
+        let currDate = today;
+        for (let i = 0; i < max; i++) {
+            dates.push(this.getStringDate(currDate));
+            dayOfMonth++;
+            currDate.setDate(dayOfMonth);
+        }
+        return dates;
+    }
+
+    getStringDate(date) {
+        // const today = new Date();
+        let stringDate =   (date.getMonth() + 1) + '_' + date.getDate() + '_' + date.getFullYear();
         return stringDate;
     }
 
-    createDoc() {
-        firestore.collection('cuts').doc(this.getTodaysDate()).set({
+    createDoc(dateString) {
+        firestore.collection('cuts').doc(dateString).set({
             cutData:[]
         });
         
     }
 
-     async fetchCurrentCuts() {
+     async fetchCurrentCuts(dateString) {
         // async request to firebase
-        const cutsRef = firestore.collection('cuts').doc(this.getTodaysDate());
+        const cutsRef = firestore.collection('cuts').doc(dateString);
         const doc =  await cutsRef.get();
         
         const data = doc.data();
         if (!data) {
-            this.createDoc();
+            this.createDoc(dateString);
             return [];
         } else {
             return data.cutData;
         }
     }
 
-    async updateCuts() {
-        let fetchedData = await this.fetchCurrentCuts();
+    async updateCuts(allowedDates) {
+        const cuts = {};
+
+        for(let i = 0; i < allowedDates.length; i++) {
+            let fetchedData = await this.fetchCurrentCuts(allowedDates[i]);
+            cuts[allowedDates[i]] = fetchedData;
+        }
+      
         this.setState({
             ...this.state,
-            currentCuts:fetchedData,
+            cuts,
+            allowedDates,
             fetchingCuts:false
         });
     }
 
     componentDidMount() {
-        this.getTodaysDate();
+        const allowedDates = this.getAllowedDays(MAX_ALLOWED_DAYS);
         this.setState({
             ...this.state,
             fetchingCuts:true
         });
 
-        this.updateCuts();
+        this.updateCuts(allowedDates);
     }
 
-    async addCut() {
-        // async add new cut for the day using user information
-        const token = await auth.currentUser.getIdToken();
-        const todaysDate = this.getTodaysDate();
-        const { userId,first,last } = this.props;
-        const cutData = {
-            userId,
-            first,
-            last,
-            date:todaysDate
-        }
-        try{
-            await fetch(ADD_CUT_URL,{
-                headers:{
-                  Authorization:`Bearer ${token}`,
-                  'content-type':'application/json'
-                },
-                method:'POST',
-                body:JSON.stringify(cutData)
-              })
-              this.updateCuts();
-        } catch (error) {
-            console.log(error);
-        }
+    displayCuts(idx) {
+        const {cuts,allowedDates} = this.state;
+        const cutData = cuts[allowedDates[idx]];
+        // const cuts = this.state.allowedDates.map((dateString,idx)=> {
+        //     const cutData = fetchedCutData[dateString];
+        //     console.log('cut-data',cutData);
+        //     return <CutView key={idx} auth={this.props.auth} date={dateString} currentCuts={cutData}/>
+        // })
+        return (
+            <CutView auth={this.props.auth} date={allowedDates[idx]} currentCuts={cutData}/>
+        )
+        // console.log('cuts-to-display',cuts);
+    }
+
+    changeDay(type) {
+        this.setState((prevState) => {
+            let currentDay = prevState.currentDay;
+            if (type === 'prev') {
+                currentDay--;
+                if (currentDay < 0) currentDay = 0;
+                
+            } else {
+                currentDay++;
+                if (currentDay >= MAX_ALLOWED_DAYS) currentDay = MAX_ALLOWED_DAYS -1
+            }
+
+            return {
+                ...prevState,
+                currentDay
+            }
+        })
     }
 
     render() {
-        const {currentCuts,fetchingCuts} = this.state;
+        const {fetchingCuts,currentDay} = this.state;
+        console.log(this.state)
         return (
             <div className="homepage">
                 <h1>Current Cuts</h1>
-                <ol className="cut-view">
-                    {currentCuts.map((cutInfo,idx)=> {
-                        return <li key={idx}>{`${cutInfo.first} ${cutInfo.last.slice(0,1)}`}</li> 
-                    })}
-                    {fetchingCuts ? <p>loading...</p> : null}
-                    {currentCuts.length === 0 ? <p>No cuts yet!</p> : null}
-                </ol>
-                <button disabled={currentCuts.length === 3 ? true : false} onClick={this.addCut.bind(this)}>add cut</button>
+                <button disabled={currentDay <= 0} onClick={()=> this.changeDay('prev')}>Prev day</button>
+                <button disabled={currentDay >= MAX_ALLOWED_DAYS -1} onClick={()=> this.changeDay('next')}>Next day</button>
+         
+                {fetchingCuts ? <p>loading...</p> : this.displayCuts(currentDay)}
             </div>
         )
     }

@@ -57,12 +57,10 @@ class App extends React.Component {
         <div>
            <Header/>
            <Switch>
-              <Route path="/home" exact><Homepage userId={currentUser.id} first={currentUser.first} last={currentUser.last}/></Route>
+              <Route path="/home" exact><Homepage auth={currentUser}/></Route>
              <Redirect to="/home"/>
            </Switch>
         </div>
-       
-      
       )
     } else {
       content = (
