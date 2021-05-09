@@ -38,8 +38,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
         try {
             await userRef.set({
-                firstName,
-                lastName,
+                first:firstName,
+                last:lastName,
                 email,
                 createdAt,
                 ...additionalData
