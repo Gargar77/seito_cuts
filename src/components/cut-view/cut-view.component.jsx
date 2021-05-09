@@ -58,7 +58,6 @@ class CutView extends React.Component {
         })
 
         const {id} = this.props.auth;
-        console.log(`removing cut with ID: ${id}`)
         const date = this.props.date;
         const cutData = {
             id,

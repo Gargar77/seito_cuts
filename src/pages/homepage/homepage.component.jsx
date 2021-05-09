@@ -42,7 +42,6 @@ class Homepage extends React.Component {
 
      async fetchCurrentCuts(dateString) {
         // async request to firebase
-        console.log("fetching!")
         const cutsRef = firestore.collection('cuts').doc(dateString);
         const doc =  await cutsRef.get();
         
@@ -109,7 +108,6 @@ class Homepage extends React.Component {
 
     render() {
         const {fetchingCuts,currentDay} = this.state;
-        console.log(this.state)
         return (
             <div className="homepage">
                 <h1>Current Cuts</h1>
