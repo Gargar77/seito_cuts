@@ -2,7 +2,7 @@ import React from 'react';
 
 import './homepage.styles.css';
 import CutView from '../../components/cut-view/cut-view.component';
-import {auth,firestore} from '../../firebase/firebase.utils';
+import {firestore} from '../../firebase/firebase.utils';
 
 const MAX_ALLOWED_DAYS = 3;
 
