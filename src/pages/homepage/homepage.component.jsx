@@ -17,7 +17,7 @@ const SAMPLE_CUTS = [
     }
 ]
 
-const SERVER_URL = "http://localhost:5001/seito-cuts/us-central1/addMessage";
+const SERVER_URL = "http://localhost:5001/seito-cuts/us-central1/addCut";
 
 class Homepage extends React.Component {
     state = {
@@ -25,12 +25,31 @@ class Homepage extends React.Component {
         fetchingCuts:false
     }
 
+    getTodaysDate() {
+        const today = new Date();
+        let stringDate =  '' + today.getDate() + (today.getMonth() + 1) + today.getFullYear();
+        return stringDate;
+    }
+
+    createDoc() {
+        firestore.collection('cuts').doc(this.getTodaysDate()).set({
+            cutData:[]
+        });
+        
+    }
+
      async fetchCurrentCuts() {
         // async request to firebase
-        const cutsRef = firestore.collection('cuts').doc('05_08_2021');
+        const cutsRef = firestore.collection('cuts').doc(this.getTodaysDate());
         const doc =  await cutsRef.get();
-        const data = doc.data().cutData;
-        return data;
+        
+        const data = doc.data();
+        if (!data) {
+            this.createDoc();
+            return [];
+        } else {
+            return data.cutData;
+        }
     }
 
     async updateCuts() {
@@ -43,6 +62,7 @@ class Homepage extends React.Component {
     }
 
     componentDidMount() {
+        this.getTodaysDate();
         this.setState({
             ...this.state,
             fetchingCuts:true
@@ -53,23 +73,30 @@ class Homepage extends React.Component {
 
     async addCut() {
         // async add new cut for the day using user information
-        console.log('fetching');
         const token = await auth.currentUser.getIdToken();
+        const todaysDate = this.getTodaysDate();
+        const { userId,first,last } = this.props;
+        const cutData = {
+            userId,
+            first,
+            last,
+            date:todaysDate
+        }
+        console.log(cutData)
               await fetch(SERVER_URL,{
                 headers:{
-                    Authorization:`Bearer ${token}`
+                    Authorization:`Bearer ${token}`,
+                    'content-type':'application/json'
                 },
-                body:`Hello Moto @${new Date().getSeconds()}`,
-                method:'POST'
+                method:'POST',
+                body:JSON.stringify(cutData)
             })
             .then( res => res.json())
             .then( data => console.log(data))
-        console.log('finished request');
     }
 
     render() {
         const {currentCuts,fetchingCuts} = this.state;
-        console.log(this.state)
         return (
             <div className="homepage">
                 <h1>Current Cuts</h1>
@@ -78,8 +105,9 @@ class Homepage extends React.Component {
                         return <li key={idx}>{`${cutInfo.first} ${cutInfo.last.slice(0,1)}`}</li> 
                     })}
                     {fetchingCuts ? <p>loading...</p> : null}
+                    {currentCuts.length === 0 ? <p>No cuts yet!</p> : null}
                 </ol>
-                <button disabled={currentCuts.length === 3 ? true : false} onClick={this.addCut}>add cut</button>
+                <button disabled={currentCuts.length === 3 ? true : false} onClick={this.addCut.bind(this)}>add cut</button>
             </div>
         )
     }

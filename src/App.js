@@ -50,15 +50,14 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     let content;
-
+    const {currentUser} = this.state;
     if (this.state.currentUser !== null || this.state.bypassAuth) {
       content = (
         <div>
            <Header/>
            <Switch>
-              <Route path="/home" exact component={Homepage}/>
+              <Route path="/home" exact><Homepage userId={currentUser.id} first={currentUser.first} last={currentUser.last}/></Route>
              <Redirect to="/home"/>
            </Switch>
         </div>
