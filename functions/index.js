@@ -4,14 +4,20 @@ admin.initializeApp();
 const cors = require('cors')({origin:true});
 
 
-function writeNewCut(prevData,requestData,docId) {
+const writeNewCut = async (prevData,requestData,docId) => {
   if (!prevData) prevData = [];
   prevData.push(requestData);
-  admin.firestore().collection('cuts').doc(docId).set({cutData:prevData})
+  await admin.firestore().collection('cuts').doc(docId).set({cutData:prevData})
 }
 
-exports.addCut = functions.https.onRequest((req,res)=> {
-  cors(req,res, async () => {
+const deleteCut = async (data,docId,cutId) => {
+  const newData = data.filter((el)=> el.id !== cutId);
+  await admin.firestore().collection('cuts').doc(docId).set({cutData:newData})
+}
+
+
+exports.addCut = functions.https.onRequest( async (req,res)=> {
+  await cors(req,res, async ()=> {
     try {
       const prevDataRef = await admin.firestore().collection('cuts').doc(req.body.date).get();
       const prevData = prevDataRef.data();
@@ -28,5 +34,24 @@ exports.addCut = functions.https.onRequest((req,res)=> {
       functions.logger.log('An unexpected error occured when adding a cut:',error);
       res.status(500).send({result:'Failed to add cut'})
     }
+  })
+})
+
+exports.removeCut = functions.https.onRequest( async (req,res)=> {
+  await cors(req,res, async ()=> {
+    const currentDataRef = await admin.firestore().collection('cuts').doc(req.body.date).get();
+    const currentData = currentDataRef.data();
+    if (!currentData) {
+      res.status(400).send({result:"Queue does not exist!"})
+    } else {
+      try {
+        await deleteCut(currentData.cutData,req.body.date,req.body.id);
+        res.status(200).send({result:'cut deleted Successfully'})
+      } catch (error) {
+        functions.logger.log('An unexpected error occured when deleting a cut:',error);
+        res.status(500).send({result:'Failed to delete cut'})
+      }
+      
+    } 
   })
 })

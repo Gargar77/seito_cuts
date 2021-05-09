@@ -85,7 +85,7 @@ class Homepage extends React.Component {
         const {cuts,allowedDates} = this.state;
         const cutData = cuts[allowedDates[idx]];
         return (
-            <CutView auth={this.props.auth} date={allowedDates[idx]} currentCuts={cutData}/>
+            <CutView auth={this.props.auth} date={allowedDates[idx]} currentCuts={cutData} updateCuts={()=>this.updateCuts(allowedDates)}/>
         )
     }
 
