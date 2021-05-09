@@ -13,8 +13,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      currentUser:null,
-      bypassAuth:false
+      currentUser:null
     }
   }
 
