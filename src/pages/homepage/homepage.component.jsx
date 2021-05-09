@@ -11,7 +11,8 @@ class Homepage extends React.Component {
         fetchingCuts:true,
         cuts:{},
         allowedDates:[],
-        currentDay:0
+        currentDay:0,
+        noFetching:true
     }
 
     getAllowedDays(max) {
@@ -55,15 +56,23 @@ class Homepage extends React.Component {
     }
 
     async updateCuts(allowedDates) {
-        const cuts = {};
+        // NOTE: fetching temporarly disabled for styling phase
+        // const cuts = {};
         this.setState({
             ...this.state,
             fetchingCuts:true
         })
-
-        for(let i = 0; i < allowedDates.length; i++) {
-            let fetchedData = await this.fetchCurrentCuts(allowedDates[i]);
-            cuts[allowedDates[i]] = fetchedData;
+        // for(let i = 0; i < allowedDates.length; i++) {
+        //     let fetchedData = await this.fetchCurrentCuts(allowedDates[i]);
+        //     cuts[allowedDates[i]] = fetchedData;
+        // }
+        const cuts = {
+            "5_9_2021":[
+                {id:'BHb69Qor2uTFt336Gjqab3G6Wuh2',first:'Gary',last:'Bautista'},
+                {id:'3pd32j923',first:"Monkey",last:"Oscar"}
+            ],
+            "5_10_2021":[],
+            "5_11_2021":[]
         }
       
         this.setState({
@@ -108,6 +117,7 @@ class Homepage extends React.Component {
 
     render() {
         const {fetchingCuts,currentDay} = this.state;
+        console.log(this.state);
         return (
             <div className="homepage">
                 <h1>Current Cuts</h1>
