@@ -42,6 +42,7 @@ class Homepage extends React.Component {
 
      async fetchCurrentCuts(dateString) {
         // async request to firebase
+        console.log("fetching!")
         const cutsRef = firestore.collection('cuts').doc(dateString);
         const doc =  await cutsRef.get();
         
@@ -83,15 +84,9 @@ class Homepage extends React.Component {
     displayCuts(idx) {
         const {cuts,allowedDates} = this.state;
         const cutData = cuts[allowedDates[idx]];
-        // const cuts = this.state.allowedDates.map((dateString,idx)=> {
-        //     const cutData = fetchedCutData[dateString];
-        //     console.log('cut-data',cutData);
-        //     return <CutView key={idx} auth={this.props.auth} date={dateString} currentCuts={cutData}/>
-        // })
         return (
             <CutView auth={this.props.auth} date={allowedDates[idx]} currentCuts={cutData}/>
         )
-        // console.log('cuts-to-display',cuts);
     }
 
     changeDay(type) {

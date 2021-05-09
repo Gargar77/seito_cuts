@@ -17,19 +17,18 @@ class CutView extends React.Component {
 
     async addCut() {
         // async add new cut for the day using user information
-        const token = await this.props.currentUser.getIdToken();
-        const todaysDate = this.getStringDate(new Date());
+        // const token = await this.props.currentUser.getIdToken();
+        const date = this.props.date;
         const { id,first,last } = this.props.auth;
         const cutData = {
             id,
             first,
             last,
-            date:todaysDate
+            date,
         }
         try{
             await fetch(ADD_CUT_URL,{
                 headers:{
-                  Authorization:`Bearer ${token}`,
                   'content-type':'application/json'
                 },
                 method:'POST',
@@ -39,6 +38,28 @@ class CutView extends React.Component {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    removeCut(id) {
+        console.log(`removing cut with ID: ${id}`)
+    }
+
+    renderCutOptions() {
+        const {currentCuts} = this.props;
+        const {id} = this.props.auth;
+        for (let i = 0; i < currentCuts.length;i++) {
+            const cut = currentCuts[i];
+            if (cut.id === id) {
+                return (
+                    <button onClick={()=>this.removeCut(id)}>remove cut</button>
+                )
+            }
+        }
+
+        return(
+            <button disabled={currentCuts.length === 3 ? true : false} onClick={this.addCut.bind(this)}>add cut</button>
+        )
+         
     }
 
     render() {
@@ -51,7 +72,7 @@ class CutView extends React.Component {
                     })}
                     {currentCuts.length === 0 ? <p>No cuts yet!</p> : null}
                 </ol>
-                <button disabled={currentCuts.length === 3 ? true : false} onClick={this.addCut.bind(this)}>add cut</button>
+                {this.renderCutOptions()}
             </div>
         )
     }
