@@ -3,6 +3,8 @@ import './auth.styles.css';
 
 import SignIn from '../../components/sign-in/sign-in.component';
 import SignUp from '../../components/sign-up/sign-up.component';
+import {ReactComponent as MainLogo} from '../../assets/seito_astro.svg';
+import {ReactComponent as CutLogo} from '../../assets/seito_cut.svg';
 
 class Auth extends React.Component {
     state = {
@@ -32,9 +34,20 @@ class Auth extends React.Component {
         
         let auth = (
             <div className="landing">
-                <h1>Welcome</h1>
-                <button onClick={this.startSignUpHandler}>Sign up</button>
-                <p>Already have an account? <span onClick={this.startSignInHandler} className="landing__signin">Sign in</span></p>
+                <div className="auth-background"></div>
+                <div className="svg-container">
+                    <div className="main-logo">
+                        <MainLogo/>
+                    </div>
+                    <div className="cut-logo">
+                        <CutLogo/>
+                    </div>
+                </div>
+               
+                <div className="auth-actions">
+                    <button onClick={this.startSignUpHandler}>Sign up</button>
+                    <p>Already have an account? <span onClick={this.startSignInHandler} className="landing-signin">Sign in</span></p>
+                </div>
             </div> 
         )
 

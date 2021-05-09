@@ -1,0 +1,43 @@
+.auth {
+    height: 100%;
+    background-image: linear-gradient(whitesmoke,rgb(255, 130, 130));
+}
+.landing {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+/* 
+.auth-background {
+    height: 100%;
+    width: 100%;
+    background-image: url('../../assets//sushi_background.jpg');
+    position: absolute;
+    z-index: -1;
+    filter: blur(5px);
+} */
+
+.auth-actions {
+    padding-top: 10%;
+    padding-bottom:30%
+}
+.cut-logo {
+    padding-top: 15%;
+}
+
+.cut-logo svg {
+    fill: black;
+    /* fill: #f8285c; */
+}
+
+.svg-container div {
+    height: fit-content;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.landing-signin {
+    color:#f8285c;
+}
