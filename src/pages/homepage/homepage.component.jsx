@@ -4,20 +4,7 @@ import './homepage.styles.css';
 
 import {auth,firestore} from '../../firebase/firebase.utils';
 
-const SAMPLE_CUTS = [
-    {
-        userId:'124458',
-        first: 'Gary',
-        last: 'Bautista'
-    },
-    {
-        userId:'44839',
-        first: 'Bianca',
-        last: 'Dessouki'
-    }
-]
-
-const SERVER_URL = "http://localhost:5001/seito-cuts/us-central1/addCut";
+const ADD_CUT_URL = "http://localhost:5001/seito-cuts/us-central1/addCut";
 
 class Homepage extends React.Component {
     state = {
@@ -82,17 +69,19 @@ class Homepage extends React.Component {
             last,
             date:todaysDate
         }
-        console.log(cutData)
-              await fetch(SERVER_URL,{
+        try{
+            await fetch(ADD_CUT_URL,{
                 headers:{
-                    Authorization:`Bearer ${token}`,
-                    'content-type':'application/json'
+                  Authorization:`Bearer ${token}`,
+                  'content-type':'application/json'
                 },
                 method:'POST',
                 body:JSON.stringify(cutData)
-            })
-            .then( res => res.json())
-            .then( data => console.log(data))
+              })
+              this.updateCuts();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     render() {
