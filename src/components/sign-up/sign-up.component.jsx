@@ -4,6 +4,8 @@ import './sign-up.styles.css';
 
 import FormInput from '../form-input/form-input.component';
 import { auth,createUserProfileDocument, signInWithGoogle } from '../../firebase/firebase.utils';
+import GoogleButton from '../google-auth-button/google-auth-button.component';
+import GoogleAuthButton from '../google-auth-button/google-auth-button.component';
 
 
 class SignUp extends React.Component {
@@ -99,8 +101,12 @@ class SignUp extends React.Component {
         const {first,last,email,password,confirmPassword} = this.state;
         return(
             <div className="sign-up">
-                <h2 className="title">Sign-up</h2>
+                <h1 className="title">Sign-up</h1>
                 <form className="sign-up-form" onSubmit={this.handleSubmit}>
+                <div className="auth-button-options">
+                        <GoogleAuthButton signInWithGoogle={signInWithGoogle} authType="Sign up"/>
+                        <span className="or-option"><div/><span>OR</span><div/></span>
+                    </div>
                     <FormInput
                     type="text"
                     name="first"
@@ -142,8 +148,8 @@ class SignUp extends React.Component {
                     required
                     />
                     <button type="submit">SIGN UP</button>
-                    <span>Or</span>
-                    <button onClick={()=>this.signUp('google')} >Sign up with Google</button>
+                   
+                    
                 </form>
             </div>
         )

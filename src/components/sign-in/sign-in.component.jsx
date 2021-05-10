@@ -4,7 +4,7 @@ import './sign-in.styles.css';
 
 import FormInput from '../form-input/form-input.component';
 import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
-
+import GoogleButton from '../google-auth-button/google-auth-button.component'
 
 class SignIn extends React.Component {
     constructor(props) {
@@ -53,9 +53,12 @@ class SignIn extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                      <FormInput name="email" type="email" value={this.state.email} label="Email" handleChange={this.handleChange} required/>
                      <FormInput name="password" type="password" value={this.state.password} label="Password" handleChange={this.handleChange} required/>
-                     <button type="submit">Sign-in</button>
-                     <span>Or</span>
-                     <button onClick={signInWithGoogle}>Sign-in with Google</button>
+                     <div className="auth-button-options">
+                        <button type="submit">Sign-in</button>
+                        <span className="or-option"><div/><span>OR</span><div/></span>
+                        <GoogleButton signInWithGoogle={signInWithGoogle} authType="Sign in"/>
+                     </div>
+                     
                 </form>
             </div>
         )

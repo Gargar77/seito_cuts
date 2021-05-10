@@ -5,6 +5,8 @@ import SignIn from '../../components/sign-in/sign-in.component';
 import SignUp from '../../components/sign-up/sign-up.component';
 import {ReactComponent as MainLogo} from '../../assets/seito_astro.svg';
 import {ReactComponent as CutLogo} from '../../assets/seito_cut.svg';
+import {ReactComponent as BackArrow} from '../../assets/back_arrow.svg';
+
 
 class Auth extends React.Component {
     state = {
@@ -30,11 +32,16 @@ class Auth extends React.Component {
         })
     }
 
+    renderBackButton(){
+        return (
+            <div className="back-arrow" onClick={this.returnHomeHandler}><BackArrow/></div>
+        )
+    }
+
     render() {
         
         let auth = (
             <div className="landing">
-                <div className="auth-background"></div>
                 <div className="svg-container">
                     <div className="main-logo">
                         <MainLogo/>
@@ -55,14 +62,14 @@ class Auth extends React.Component {
         if (isSignIn && !isLanding) {
             auth = (
                 <div>
-                    <button onClick={this.returnHomeHandler}>back</button>
+                    {this.renderBackButton()}
                     <SignIn/>
                 </div>
             )
         } else if (!isLanding) {
             auth = (
                 <div>
-                    <button onClick={this.returnHomeHandler}>back</button>
+                    {this.renderBackButton()}
                     <SignUp/>
                 </div>
             )

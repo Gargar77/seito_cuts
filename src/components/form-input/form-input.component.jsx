@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './form-input.styles.css';
+import './form-input.styles.scss';
 
 // NOTE: we are making the label tag optional in this component
 const FormInput = ({handleChange,label,...otherProps}) => (

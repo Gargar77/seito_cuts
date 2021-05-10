@@ -1,23 +1,17 @@
 .auth {
-    height: 100%;
+    height: 100vh;
     background-image: linear-gradient(whitesmoke,rgb(255, 130, 130));
+    overflow: scroll;
 }
 .landing {
-    height: 100vh;
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden;
 }
-/* 
-.auth-background {
-    height: 100%;
-    width: 100%;
-    background-image: url('../../assets//sushi_background.jpg');
-    position: absolute;
-    z-index: -1;
-    filter: blur(5px);
-} */
+
 
 .auth-actions {
     padding-top: 10%;
@@ -40,4 +34,46 @@
 
 .landing-signin {
     color:#f8285c;
+}
+
+.sign-in,.sign-up {
+    height: 100%;
+    padding: 10%;
+}
+
+.back-arrow {
+    position: absolute;
+    height:40px;
+    width: 40px;
+    padding: 12px;
+}
+
+.auth-button-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 160px;
+}
+
+.span-line {
+    height: 2px;
+    width: 40px;
+    background-color: black;
+}
+
+.or-option {
+    display: flex;
+    justify-content: center;
+}
+
+.or-option div {
+    width: 100px;
+    height: 0.5px;
+    background: black;
+    align-self: center;
+}
+
+.or-option span {
+    padding: 0 10px;
 }
