@@ -4,7 +4,6 @@ import './sign-up.styles.css';
 
 import FormInput from '../form-input/form-input.component';
 import { auth,createUserProfileDocument, signInWithGoogle } from '../../firebase/firebase.utils';
-import GoogleButton from '../google-auth-button/google-auth-button.component';
 import GoogleAuthButton from '../google-auth-button/google-auth-button.component';
 
 
