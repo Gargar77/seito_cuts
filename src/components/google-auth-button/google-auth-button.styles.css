@@ -1,0 +1,23 @@
+.google-auth-button {
+    background-color: #4285F4;
+    box-shadow: none;
+    overflow: hidden;
+    height: 55px;
+    display: flex;
+}
+
+.google-logo {
+    background-color: white;
+    height: 100%;    
+    width: 40px;
+    padding: 2px 8px;
+    border-right: 1px solid darkgrey;
+    position: relative;
+    left: -8px;
+    top: -3px;
+}
+
+.google-auth-button span {
+    color: white;
+    padding: 5px;
+}
