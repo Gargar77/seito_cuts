@@ -3,6 +3,8 @@ import React from 'react';
 import './homepage.styles.css';
 import CutView from '../../components/cut-view/cut-view.component';
 import {firestore} from '../../firebase/firebase.utils';
+import {ReactComponent as LeftArrow} from '../../assets/arrow_color_left.svg';
+import {ReactComponent as RightArrow} from '../../assets/arrow_color_right.svg';
 
 const MAX_ALLOWED_DAYS = 3;
 
@@ -11,6 +13,7 @@ class Homepage extends React.Component {
         fetchingCuts:true,
         cuts:{},
         allowedDates:[],
+        beautifiedDates:[],
         currentDay:0,
         noFetching:true
     }
@@ -19,19 +22,26 @@ class Homepage extends React.Component {
         const today = new Date();
         let dayOfMonth = today.getDate();
         const dates = [];
+        const beautifiedDates = [];
         let currDate = today;
         for (let i = 0; i < max; i++) {
             dates.push(this.getStringDate(currDate));
+            beautifiedDates.push(this.getBeautifiedDates(currDate));
             dayOfMonth++;
             currDate.setDate(dayOfMonth);
         }
-        return dates;
+        return [dates,beautifiedDates];
     }
 
     getStringDate(date) {
         // const today = new Date();
         let stringDate =   (date.getMonth() + 1) + '_' + date.getDate() + '_' + date.getFullYear();
         return stringDate;
+    }
+
+    getBeautifiedDates(date) {
+        const [day,month,dayNum] = date.toString().split(' ');        
+        return `${day}, ${month} ${dayNum}`
     }
 
     createDoc(dateString) {
@@ -67,18 +77,19 @@ class Homepage extends React.Component {
         //     cuts[allowedDates[i]] = fetchedData;
         // }
         const cuts = {
-            "5_9_2021":[
+            "5_11_2021":[
                 {id:'BHb69Qor2uTFt336Gjqab3G6Wuh2',first:'Gary',last:'Bautista'},
                 {id:'3pd32j923',first:"Monkey",last:"Oscar"}
             ],
-            "5_10_2021":[],
-            "5_11_2021":[]
+            "5_12_2021":[],
+            "5_13_2021":[]
         }
       
         this.setState({
             ...this.state,
             cuts,
-            allowedDates,
+            allowedDates:allowedDates[0],
+            beautifiedDates:allowedDates[1],
             fetchingCuts:false
         });
     }
@@ -91,6 +102,7 @@ class Homepage extends React.Component {
     displayCuts(idx) {
         const {cuts,allowedDates} = this.state;
         const cutData = cuts[allowedDates[idx]];
+        console.log(cutData,idx)
         return (
             <CutView auth={this.props.auth} date={allowedDates[idx]} currentCuts={cutData} updateCuts={()=>this.updateCuts(allowedDates)}/>
         )
@@ -116,14 +128,16 @@ class Homepage extends React.Component {
     }
 
     render() {
-        const {fetchingCuts,currentDay} = this.state;
+        const {fetchingCuts,currentDay,beautifiedDates} = this.state;
         console.log(this.state);
         return (
             <div className="homepage">
                 <h1>Current Cuts</h1>
-                <button disabled={currentDay <= 0} onClick={()=> this.changeDay('prev')}>Prev day</button>
-                <button disabled={currentDay >= MAX_ALLOWED_DAYS -1} onClick={()=> this.changeDay('next')}>Next day</button>
-         
+                <div className="date-selection-container">
+                    <LeftArrow className={`arrow ${currentDay <= 0 ? 'disabled':''}`} onClick={()=> this.changeDay('prev')}/>
+                    <p>{beautifiedDates[currentDay]}</p>
+                    <RightArrow className={`arrow ${currentDay >= MAX_ALLOWED_DAYS -1 ? 'disabled':''}`} onClick={()=> this.changeDay('next')}/>
+                </div>
                 {fetchingCuts ? <p>loading...</p> : this.displayCuts(currentDay)}
             </div>
         )

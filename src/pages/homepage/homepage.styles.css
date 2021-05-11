@@ -1,0 +1,23 @@
+.homepage {
+    background-image: linear-gradient(whitesmoke,rgb(255, 130, 130));
+    height: 77vh;
+    padding-top: 50%;
+}
+
+.homepage h1 {
+    margin-top: 0;
+    font-family: 'Permanent Marker', cursive;
+}
+
+
+.date-selection-container {
+    display: flex;
+    justify-content: center;
+}
+
+.arrow.disabled polygon  {
+    fill: grey;
+    filter: blur(1px);
+}
+
+p { color: black;padding: 0 12%;}
