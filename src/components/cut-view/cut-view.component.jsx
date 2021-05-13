@@ -3,8 +3,20 @@ import React from 'react';
 import './cut-view.styles.css';
 
 
+import {ReactComponent as PlusIcon} from '../../assets/plus_sign.svg'
+import {ReactComponent as MinusIcon} from '../../assets/minus_sign.svg'
+import {ReactComponent as OneIcon} from '../../assets/one.svg';
+import {ReactComponent as TwoIcon} from '../../assets/two.svg';
+import {ReactComponent as ThreeIcon} from '../../assets/three.svg';
+
+const numberIcons = [
+    <div className="list-num"><OneIcon/></div>,
+    <div className="list-num"><TwoIcon/></div>,
+    <div className="list-num"><ThreeIcon/></div>,
+];
 const ADD_CUT_URL = "https://us-central1-seito-cuts.cloudfunctions.net/addCut";
 const REMOVE_CUT_URL = "https://us-central1-seito-cuts.cloudfunctions.net/removeCut";
+
 
 
 class CutView extends React.Component {
@@ -90,13 +102,25 @@ class CutView extends React.Component {
             const cut = currentCuts[i];
             if (cut.id === id) {
                 return (
-                    <button disabled={this.state.editingCut} onClick={this.removeCut.bind(this)}>remove cut</button>
+                    <button 
+                        className="cut-action-button"
+                        disabled={this.state.editingCut} 
+                        onClick={this.removeCut.bind(this)}>
+                            REMOVE CUT
+                            <div><MinusIcon/></div>
+                    </button>
                 )
             }
         }
 
         return(
-            <button disabled={currentCuts.length === 3 || this.state.editingCut} onClick={this.addCut.bind(this)}>add cut</button>
+            <button 
+                className="cut-action-button"
+                disabled={currentCuts.length === 3 || this.state.editingCut} 
+                onClick={this.addCut.bind(this)}>
+                    ADD CUT
+                    <div><PlusIcon/></div>
+            </button>
         )
          
     }
@@ -104,12 +128,12 @@ class CutView extends React.Component {
     render() {
         const {currentCuts} = this.props;
         return (
-            <div>
-                <ol className="cut-view">
+            <div className="cut-view">
+                <ol className="cut-list">
                     {currentCuts.map((cutInfo,idx)=> {
-                    return <li key={idx}>{`${cutInfo.first} ${cutInfo.last.slice(0,1)}`}</li> 
+                    return <li className="cut-item" key={idx}>{numberIcons[idx]}{`${cutInfo.first} ${cutInfo.last.slice(0,1)}.`}</li> 
                     })}
-                    {currentCuts.length === 0 ? <p>No cuts yet!</p> : null}
+                    {currentCuts.length === 0 ? <p className="no-cut-text">No cuts yet!</p> : null}
                 </ol>
                 {this.renderCutOptions()}
             </div>

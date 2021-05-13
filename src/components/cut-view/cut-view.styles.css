@@ -1,0 +1,48 @@
+.cut-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 60%;
+    width: 100%;
+}
+
+.cut-list {
+    padding: 0;
+    width: 60%;
+}
+
+.no-cut-text {
+    font-family: 'Permanent Marker', cursive;
+}
+
+.cut-item {
+    list-style:none;
+    text-align: center;
+    font-size: 1.8rem;
+    font-family: 'Permanent Marker', cursive;
+    background: whitesmoke;
+    margin: 10px 0;
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.list-num {
+    height: 30px;
+    width: 30px;
+    margin-right: 12px;
+}
+.cut-action-button {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    justify-content: space-around;
+}
+
+.cut-action-button div {
+    height: 30px;
+    width: 30px;
+}
