@@ -27,7 +27,6 @@ class SignIn extends React.Component {
             await auth.signInWithEmailAndPassword(email,password);
             this.setState({email:'',password:''});
         } catch (error) {
-            console.log(error)
             switch(error.code) {
                 case "auth/wrong-password":
                     this.addError("The email and password combination is incorrect, Please try again.");
@@ -65,7 +64,6 @@ class SignIn extends React.Component {
     }
 
     render() {
-        console.log(this.state)
         return (
             <div className="sign-in">
                 <h1>Sign-in</h1>

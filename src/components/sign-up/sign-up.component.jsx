@@ -44,7 +44,6 @@ class SignUp extends React.Component {
                 default:
                this.addError("an unexpected error occured, please try again");
             }
-            console.log(error);
         }
     }
     
@@ -103,7 +102,6 @@ class SignUp extends React.Component {
     }
 
     render() {
-        console.log(this.state)
         const {first,last,email,password,confirmPassword,errors} = this.state;
         return(
             <div className="sign-up">
