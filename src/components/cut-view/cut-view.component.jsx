@@ -85,8 +85,8 @@ class CutView extends React.Component {
                 method:'DELETE',
                 body:JSON.stringify(cutData)
               })
-            this.props.updateCuts();
             alert("Sucessfully Removed cut!");  
+            this.props.updateCuts();
         } catch (error) {
             console.log(error);
         } finally {
