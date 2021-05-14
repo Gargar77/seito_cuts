@@ -52,6 +52,7 @@ class CutView extends React.Component {
                 method:'POST',
                 body:JSON.stringify(cutData)
               })
+            alert("Sucessfully added cut!");  
             this.props.updateCuts();
         } catch (error) {
             console.log(error);
@@ -85,6 +86,7 @@ class CutView extends React.Component {
                 body:JSON.stringify(cutData)
               })
             this.props.updateCuts();
+            alert("Sucessfully Removed cut!");  
         } catch (error) {
             console.log(error);
         } finally {
@@ -98,6 +100,14 @@ class CutView extends React.Component {
     renderCutOptions() {
         const {currentCuts} = this.props;
         const {id} = this.props.auth;
+        if (this.state.editingCut) {
+            return (
+                <div>
+                    <div className="lds-dual-ring"></div>
+                    <p>Loading...</p>
+                </div>
+            )
+        }
         for (let i = 0; i < currentCuts.length;i++) {
             const cut = currentCuts[i];
             if (cut.id === id) {
