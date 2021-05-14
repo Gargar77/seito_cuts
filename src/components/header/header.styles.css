@@ -79,3 +79,21 @@
 }
 
 
+@media screen and (min-width:700px) {
+    .drawer {
+        width: 25vw;
+    }
+    .drawer.hidden {
+        left: -3000px;
+    }
+    .backdrop.hidden {
+        left: -3000px;
+    }
+
+    .burger-icon {
+        position: absolute;
+        left: 25vw;
+        cursor: pointer;
+    }
+}
+
