@@ -1,3 +1,81 @@
 .main-header {
     position: absolute;
 }
+
+.burger-icon {
+    margin: 14px;
+}
+
+.burger-icon div {
+    width: 30px;
+    height: 3px;
+    background-color: black;
+    margin: 5px 0;
+}
+
+
+
+.drawer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 70vw;
+    background-color: white;
+    transition: left ease-in 300ms;
+}
+
+.backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(0, 0, 0);
+    opacity: 0.5;
+    transition: opacity ease-in 400ms;
+}
+
+.drawer.hidden {
+    left: -300px;
+}
+
+.drawer p {
+    margin: 0;
+    text-align: left;
+    padding: 0;
+}
+.drawer p:last-child {
+    padding-top: 8px;
+}
+
+.intro {
+    padding: 16px;
+}
+
+.intro-email {
+    font-size: 1rem;
+    color: gray;
+}
+
+.logout-button {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    padding: 16px;
+    font-weight: bold;
+    color: gray;
+}
+
+.logout-button div {
+    height: 24px;
+    width: 24px;
+    margin-right: 16px;
+}
+
+.backdrop.hidden {
+    opacity: 0;
+    left: -500px;
+}
+
+

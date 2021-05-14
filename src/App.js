@@ -54,7 +54,7 @@ class App extends React.Component {
     if (this.state.currentUser !== null || this.state.bypassAuth) {
       content = (
         <div>
-           <Header/>
+           <Header authInfo={currentUser} />
            <Switch>
               <Route path="/home" exact><Homepage auth={currentUser}/></Route>
              <Redirect to="/home"/>

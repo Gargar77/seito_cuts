@@ -77,17 +77,17 @@ class Homepage extends React.Component {
         //     cuts[allowedDates[i]] = fetchedData;
         // }
         const cuts = {
-            "5_13_2021":[
+            "5_14_2021":[
                 {id:'BHb69Qor2uTFt336Gjqab3G6Wuh2',first:'Gary',last:'Bautista'},
                 {id:'3pd32j923',first:"Monkey",last:"Oscar"},
                 {id:'3pd32j923',first:"Monkey",last:"Oscar"}
             ],
-            "5_14_2021":[
-                {id:'BHb69Qor2uTFtjqab3G6Wuh2',first:'Gary',last:'Bautista'},
+            "5_15_2021":[
+                {id:'BHb69Qor2uTFt336GjqWuh2',first:'Gary',last:'Bautista'},
                 {id:'3pd32j923',first:"Monkey",last:"Oscar"},
                 {id:'3pd32j923',first:"Monkey",last:"Oscar"}
             ],
-            "5_15_2021":[]
+            "5_16_2021":[]
         }
       
         this.setState({
@@ -137,12 +137,14 @@ class Homepage extends React.Component {
         return (
             <div className="homepage">
                 <h1>Current Cuts</h1>
+                <div>
                 <div className="date-selection-container">
                     <LeftArrow className={`arrow ${currentDay <= 0 ? 'disabled':''}`} onClick={()=> this.changeDay('prev')}/>
                     <p>{beautifiedDates[currentDay]}</p>
                     <RightArrow className={`arrow ${currentDay >= MAX_ALLOWED_DAYS -1 ? 'disabled':''}`} onClick={()=> this.changeDay('next')}/>
                 </div>
                 {fetchingCuts ? <p>loading...</p> : this.displayCuts(currentDay)}
+                </div>
             </div>
         )
     }

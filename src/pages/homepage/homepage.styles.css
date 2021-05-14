@@ -1,18 +1,21 @@
 .homepage {
     background-image: linear-gradient(whitesmoke,rgb(255, 130, 130));
-    height: 77vh;
-    padding-top: 50%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .homepage h1 {
-    margin-top: 0;
     font-family: 'Permanent Marker', cursive;
+    margin: 0;
 }
 
 
 .date-selection-container {
     display: flex;
     justify-content: center;
+    margin-bottom: 18%;
 }
 
 .arrow.disabled polygon  {
