@@ -5,7 +5,7 @@ import './sign-up.styles.css';
 import FormInput from '../form-input/form-input.component';
 import { auth,createUserProfileDocument, signInWithGoogle } from '../../firebase/firebase.utils';
 import GoogleAuthButton from '../google-auth-button/google-auth-button.component';
-
+import ErrorNotification from '../error-notification/error-notification.component';
 
 class SignUp extends React.Component {
     constructor() {
@@ -37,13 +37,20 @@ class SignUp extends React.Component {
             await createUserProfileDocument(user,{first,last});
            }
         } catch (error) {
-            this.addError("an unexpected error occured, please try again");
+            switch(error.code) {
+                case "auth/email-already-in-use":
+                    this.addError(error.message);
+                    break;
+                default:
+               this.addError("an unexpected error occured, please try again");
+            }
             console.log(error);
         }
     }
     
     handleSubmit =  (e) => {
         e.preventDefault();
+        this.clearErrors();
         this.signUp('email');
     }
 
@@ -53,7 +60,7 @@ class SignUp extends React.Component {
         this.confirmPasswords(password,confirmPassword);
         setTimeout(() => {
             this.clearErrors();
-        }, 5000);
+        }, 10000);
     }
 
     confirmPasswords(password,confirmPassword) {
@@ -97,7 +104,7 @@ class SignUp extends React.Component {
 
     render() {
         console.log(this.state)
-        const {first,last,email,password,confirmPassword} = this.state;
+        const {first,last,email,password,confirmPassword,errors} = this.state;
         return(
             <div className="sign-up">
                 <h1 className="title">Sign-up</h1>
@@ -105,7 +112,8 @@ class SignUp extends React.Component {
                 <div className="auth-button-options">
                         <GoogleAuthButton signInWithGoogle={signInWithGoogle} authType="Sign up"/>
                         <span className="or-option"><div/><span>OR</span><div/></span>
-                    </div>
+                </div>
+                <ErrorNotification errors={errors}/>
                     <FormInput
                     type="text"
                     name="first"
@@ -147,8 +155,6 @@ class SignUp extends React.Component {
                     required
                     />
                     <button type="submit">SIGN UP</button>
-                   
-                    
                 </form>
             </div>
         )

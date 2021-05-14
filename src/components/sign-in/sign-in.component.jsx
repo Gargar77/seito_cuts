@@ -5,6 +5,7 @@ import './sign-in.styles.css';
 import FormInput from '../form-input/form-input.component';
 import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
 import GoogleButton from '../google-auth-button/google-auth-button.component'
+import ErrorNotification from '../error-notification/error-notification.component';
 
 class SignIn extends React.Component {
     constructor(props) {
@@ -19,14 +20,24 @@ class SignIn extends React.Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
-
+        this.clearErrors();
         const { email,password } = this.state
 
         try {
             await auth.signInWithEmailAndPassword(email,password);
             this.setState({email:'',password:''});
         } catch (error) {
-            console.log(error);
+            console.log(error)
+            switch(error.code) {
+                case "auth/wrong-password":
+                    this.addError("The email and password combination is incorrect, Please try again.");
+                    break;
+                case "auth/user-not-found":
+                    this.addError("User does not exist. Please sign up first.");
+                    break;
+                default:
+               this.addError("an unexpected error occured, Please try again");
+            }
         }
     }
 
@@ -41,15 +52,24 @@ class SignIn extends React.Component {
         })
     }
 
+    clearErrors() {
+        this.setState({
+            ...this.state,
+            errors:[]
+        })
+    }
+
     handleChange = e => {
         const { value,name } = e.target;
         this.setState({[name]:value})
     }
 
     render() {
+        console.log(this.state)
         return (
             <div className="sign-in">
                 <h1>Sign-in</h1>
+                <ErrorNotification errors={this.state.errors}/>
                 <form onSubmit={this.handleSubmit}>
                      <FormInput name="email" type="email" value={this.state.email} label="Email" handleChange={this.handleChange} required/>
                      <FormInput name="password" type="password" value={this.state.password} label="Password" handleChange={this.handleChange} required/>
