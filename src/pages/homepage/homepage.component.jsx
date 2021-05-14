@@ -65,51 +65,37 @@ class Homepage extends React.Component {
         }
     }
 
-    async updateCuts(allowedDates) {
-        // NOTE: fetching temporarly disabled for styling phase
-        // const cuts = {};
+    async updateCuts(allowedDates,beautifiedDates) {
+        const cuts = {};
         this.setState({
             ...this.state,
             fetchingCuts:true
         })
-        // for(let i = 0; i < allowedDates.length; i++) {
-        //     let fetchedData = await this.fetchCurrentCuts(allowedDates[i]);
-        //     cuts[allowedDates[i]] = fetchedData;
-        // }
-        const cuts = {
-            "5_14_2021":[
-                {id:'BHb69Qor2uTFt336Gjqab3G6Wuh2',first:'Gary',last:'Bautista'},
-                {id:'3pd32j923',first:"Monkey",last:"Oscar"},
-                {id:'3pd32j923',first:"Monkey",last:"Oscar"}
-            ],
-            "5_15_2021":[
-                {id:'BHb69Qor2uTFt336GjqWuh2',first:'Gary',last:'Bautista'},
-                {id:'3pd32j923',first:"Monkey",last:"Oscar"},
-                {id:'3pd32j923',first:"Monkey",last:"Oscar"}
-            ],
-            "5_16_2021":[]
+        for(let i = 0; i < allowedDates.length; i++) {
+
+            let fetchedData = await this.fetchCurrentCuts(allowedDates[i]);
+            cuts[allowedDates[i]] = fetchedData;
         }
       
         this.setState({
             ...this.state,
             cuts,
-            allowedDates:allowedDates[0],
-            beautifiedDates:allowedDates[1],
+            allowedDates:allowedDates,
+            beautifiedDates:beautifiedDates,
             fetchingCuts:false
         });
     }
 
     componentDidMount() {
-        const allowedDates = this.getAllowedDays(MAX_ALLOWED_DAYS);
-        this.updateCuts(allowedDates);
+        const [allowedDates,beautifiedDates] = this.getAllowedDays(MAX_ALLOWED_DAYS);
+        this.updateCuts(allowedDates,beautifiedDates);
     }
 
     displayCuts(idx) {
-        const {cuts,allowedDates} = this.state;
+        const {cuts,allowedDates,beautifiedDates} = this.state;
         const cutData = cuts[allowedDates[idx]];
-        console.log(cutData,idx)
         return (
-            <CutView auth={this.props.auth} date={allowedDates[idx]} currentCuts={cutData} updateCuts={()=>this.updateCuts(allowedDates)}/>
+            <CutView auth={this.props.auth} date={allowedDates[idx]} currentCuts={cutData} updateCuts={()=>this.updateCuts(allowedDates,beautifiedDates)}/>
         )
     }
 
