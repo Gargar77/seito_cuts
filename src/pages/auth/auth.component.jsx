@@ -54,6 +54,7 @@ class Auth extends React.Component {
                 <div className="auth-actions">
                     <button onClick={this.startSignUpHandler}>Sign up</button>
                     <p>Already have an account? <span onClick={this.startSignInHandler} className="landing-signin">Sign in</span></p>
+                    <p style={{marginTop:'40px'}}className="credit">Made with ❤️ by <span onClick={()=>window.open("https://garybautista.me/",'_blank')}>Gary Bautista</span></p>
                 </div>
             </div> 
         )

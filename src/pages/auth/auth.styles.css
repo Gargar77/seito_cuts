@@ -79,11 +79,18 @@
     padding: 0 10px;
 }
 
+.credit {
+    font-size: 1rem;
+    color: rgb(77, 77, 77);
+}
+
 @media screen and (min-width:700px) {
     .auth {
         height: 80vh;
-        width: 50vw;
+        width: 25vw;
         margin: 0 auto;
+    }
+    .landing {
         overflow: scroll;
     }
 
