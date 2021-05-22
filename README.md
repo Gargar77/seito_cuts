@@ -10,6 +10,7 @@ This single page web application was created to help a local restaurant organize
  <img height="300" src="https://firebasestorage.googleapis.com/v0/b/seito-cuts.appspot.com/o/seito-cuts_home.png?alt=media&token=b96a42cf-2d0b-4dde-8895-5bf53f3277ad">
  <br/>
  <br/>
+ This app was created using create-react-app (and all of its dependencies), Firebase, and Node.js
 
  ## Version History
  * 1.0
