@@ -3,17 +3,8 @@ import firebase from 'firebase/app'
 // the products we want to use
 import 'firebase/firestore';
 import 'firebase/auth';
+import {config} from './firebaseConfig';
 
-
-const config = {
-    apiKey: "AIzaSyAWdrum6KrZEOdTFAlZsFfL-oaAx9Pczck",
-    authDomain: "seito-cuts.firebaseapp.com",
-    projectId: "seito-cuts",
-    storageBucket: "seito-cuts.appspot.com",
-    messagingSenderId: "384329093467",
-    appId: "1:384329093467:web:7d976c62f5da41403d0a7e",
-    measurementId: "G-6XPVPGCBLQ"
-  };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
     if (!userAuth) return;
