@@ -11,7 +11,7 @@ This single page web application was created to help a local restaurant organize
  <br/>
  <br/>
 
- ##version History
+ ## Version History
  * 1.0
-   * initial release 
+   * Initial release 
 
