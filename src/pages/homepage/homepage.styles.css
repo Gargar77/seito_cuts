@@ -32,7 +32,6 @@ p { color: black;padding: 0 12%;}
 @media screen and (min-width:700px) {
     .homepage {
         width: 50vw;
-        height: 90vh;
         margin: 0 auto;
     }
 }

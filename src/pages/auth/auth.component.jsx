@@ -48,6 +48,7 @@ class Auth extends React.Component {
                     </div>
                     <div className="cut-logo">
                         <CutLogo/>
+                        v1.0
                     </div>
                 </div>
                

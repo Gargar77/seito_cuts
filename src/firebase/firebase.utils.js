@@ -17,7 +17,6 @@ const config = {
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
     if (!userAuth) return;
-    
     const userRef = firestore.doc(`users/${userAuth.uid}`);
     const snapshot = await userRef.get();
 
@@ -27,22 +26,18 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
             let [first,middle,last=''] = userAuth.displayName.split(' ');
             firstName = first;
             if (last === '') lastName = middle;
-        } else {
-           firstName = userAuth.first;
-           lastName = userAuth.last;
         }
         const { email } = userAuth;
       
       
         const createdAt = new Date();
-
         try {
             await userRef.set({
-                first:firstName,
-                last:lastName,
+                first:firstName || "",
+                last:lastName || "",
                 email,
                 createdAt,
-                ...additionalData
+                additionalData:additionalData || ""
             })
         } catch(error) {
             console.log('error creating user',error.message)

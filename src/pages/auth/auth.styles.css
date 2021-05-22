@@ -23,7 +23,6 @@
 
 .cut-logo svg {
     fill: black;
-    /* fill: #f8285c; */
 }
 
 .svg-container div {
@@ -86,12 +85,7 @@
 
 @media screen and (min-width:700px) {
     .auth {
-        height: 80vh;
         width: 25vw;
         margin: 0 auto;
     }
-    .landing {
-        overflow: scroll;
-    }
-
 }

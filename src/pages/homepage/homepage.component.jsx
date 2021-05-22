@@ -6,7 +6,7 @@ import {firestore} from '../../firebase/firebase.utils';
 import {ReactComponent as LeftArrow} from '../../assets/arrow_color_left.svg';
 import {ReactComponent as RightArrow} from '../../assets/arrow_color_right.svg';
 
-const MAX_ALLOWED_DAYS = 3;
+const MAX_ALLOWED_DAYS = 5;
 
 class Homepage extends React.Component {
     state = {

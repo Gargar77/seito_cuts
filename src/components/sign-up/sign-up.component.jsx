@@ -17,13 +17,13 @@ class SignUp extends React.Component {
             email:'',
             password:'',
             confirmPassword: '',
-            errors:[]
+            errors:[],
+            isSigningUp:false
         }
     }
 
     signUp = async (provider) => {
-        const {first,last,email,password} = this.state;
-
+        const {email,password} = this.state;
         this.validate();
 
         try {
@@ -34,7 +34,7 @@ class SignUp extends React.Component {
             await createUserProfileDocument(user,{first,last});
            } else {
             const {user} = await auth.createUserWithEmailAndPassword(email,password);
-            await createUserProfileDocument(user,{first,last});
+            await createUserProfileDocument(user,{first:this.state.first,last:this.state.last});
            }
         } catch (error) {
             switch(error.code) {
@@ -43,12 +43,20 @@ class SignUp extends React.Component {
                     break;
                 default:
                this.addError("an unexpected error occured, please try again");
+               this.setState({
+                ...this.state,
+                isSigningUp:false
+            })
             }
         }
     }
     
     handleSubmit =  (e) => {
         e.preventDefault();
+        this.setState({
+            ...this.state,
+            isSigningUp:true
+        })
         this.clearErrors();
         this.signUp('email');
     }
@@ -57,9 +65,6 @@ class SignUp extends React.Component {
         const {password,confirmPassword} = this.state;
         // if passwords match
         this.confirmPasswords(password,confirmPassword);
-        setTimeout(() => {
-            this.clearErrors();
-        }, 10000);
     }
 
     confirmPasswords(password,confirmPassword) {
@@ -102,7 +107,7 @@ class SignUp extends React.Component {
     }
 
     render() {
-        const {first,last,email,password,confirmPassword,errors} = this.state;
+        const {first,last,email,password,confirmPassword,errors,isSigningUp} = this.state;
         return(
             <div className="sign-up">
                 <h1 className="title">Sign-up</h1>
@@ -152,7 +157,7 @@ class SignUp extends React.Component {
                     label="Confirm Password"
                     required
                     />
-                    <button type="submit">SIGN UP</button>
+                    {isSigningUp ? <p>Loading...</p> : <button type="submit">SIGN UP</button>} 
                 </form>
             </div>
         )
