@@ -28,7 +28,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
                 last:lastName || "",
                 email,
                 createdAt,
-                additionalData:additionalData || ""
+                ...additionalData
             })
         } catch(error) {
             console.log('error creating user',error.message)
