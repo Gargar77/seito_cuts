@@ -20,15 +20,14 @@ class Homepage extends React.Component {
 
     getAllowedDays(max) {
         const today = new Date();
-        let dayOfMonth = today.getDate();
+        // let dayOfMonth = today.getDate();
         const dates = [];
         const beautifiedDates = [];
         let currDate = today;
         for (let i = 0; i < max; i++) {
             dates.push(this.getStringDate(currDate));
             beautifiedDates.push(this.getBeautifiedDates(currDate));
-            dayOfMonth++;
-            currDate.setDate(dayOfMonth);
+            currDate.setDate(currDate.getDate()+1);
         }
         return [dates,beautifiedDates];
     }
