@@ -5,6 +5,7 @@ import CutView from '../../components/cut-view/cut-view.component';
 import {firestore} from '../../firebase/firebase.utils';
 import {ReactComponent as LeftArrow} from '../../assets/arrow_color_left.svg';
 import {ReactComponent as RightArrow} from '../../assets/arrow_color_right.svg';
+import DadJoke from '../../components/dad-jokes/dad-jokes.component';
 
 const MAX_ALLOWED_DAYS = 5;
 
@@ -121,6 +122,7 @@ class Homepage extends React.Component {
         const {fetchingCuts,currentDay,beautifiedDates} = this.state;
         return (
             <div className="homepage">
+                <DadJoke/>
                 <h1>Current Cuts</h1>
                 <div>
                 <div className="date-selection-container">
